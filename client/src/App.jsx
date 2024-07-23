@@ -1,5 +1,28 @@
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import AppLayout from "./pages/AppLayout";
+import Login from "./pages/Login";
+import Error from "./components/Error";
+
 function App() {
-  return <div></div>;
+  const router = createBrowserRouter([
+    {
+      element: <AppLayout />,
+      errorElement: <Error />,
+
+      children: [
+        {
+          path: "/login",
+          element: <Login />,
+        },
+        {
+          path: "/",
+          element: <AppLayout />,
+        },
+      ],
+    },
+  ]);
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;
