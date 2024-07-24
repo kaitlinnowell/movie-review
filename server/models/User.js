@@ -29,6 +29,7 @@ const userSchema = new Schema(
   }
 );
 
+// hash user password
 userSchema.pre("save", async function (next) {
   if (this.isNew || this.isModified("password")) {
     const saltRounds = 10;
@@ -38,9 +39,14 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
+// validate password
 userSchema.methods.isCorrectPassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
+
+userSchema.virtual("savedMovieCount").get(function () {
+  return this.savedMovies.length;
+});
 
 const User = model("User", userSchema);
 
