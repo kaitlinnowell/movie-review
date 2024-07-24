@@ -11,6 +11,7 @@ const movieSchema = new Schema({
   },
   image: {
     type: String,
+    required: true,
   },
   directors: [
     {
@@ -29,7 +30,6 @@ const movieSchema = new Schema({
   },
   favorite: {
     type: Boolean,
-    required: false,
   },
 });
 
