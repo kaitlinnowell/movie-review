@@ -1,4 +1,4 @@
-function LoginBox() {
+function LoginBox({ setBox }) {
   return (
     <div>
       <h1>Login</h1>

@@ -1,11 +1,17 @@
 import LoginBox from "../components/LoginBox";
 import SignupBox from "../components/SignupBox";
+import { useState } from "react";
 
 function Login() {
-  const x=true
+  const [box, setBox] = useState("login");
+
   return (
     <div>
-      {x===true ? <LoginBox />: <SignupBox/>}
+      {box === "login" ? (
+        <LoginBox setBox={setBox} />
+      ) : (
+        box === "signup"(<SignupBox setBox={setBox} />)
+      )}
     </div>
   );
 }
