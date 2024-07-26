@@ -1,11 +1,9 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useRef, useState } from "react";
 import StarRating from "../components/StarRating";
 import { useMovies } from "../hooks/useMovies";
 import { useLocalStorageState } from "../hooks/useLocalStorageState";
 import { useKey } from "../hooks/useKey";
-
-const average = (arr) =>
-  arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
 const KEY = "e91d2696";
 
@@ -13,11 +11,13 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(null);
   const { movies, isLoading, error } = useMovies(query);
+  const [display, setDisplay] = useState(true);
 
   const [watched, setWatched] = useLocalStorageState([], "watched");
 
   function handleSelectMovie(id) {
     setSelectedId((selectedId) => (id === selectedId ? null : id));
+    setDisplay(false);
   }
 
   function handleCloseMovie() {
@@ -42,22 +42,22 @@ export default function App() {
   );
 
   return (
-    <>
+    <div className="h-full">
       <NavBar>
         <Search query={query} setQuery={setQuery} />
         <NumResults movies={movies} />
       </NavBar>
-      <Main>
-        <Box>
+      <Main className="flex">
+        <Box className="flex" setDisplay={setDisplay}>
           {/* {isLoading ? <Loader /> : <MovieList movies={movies} />} */}
           {isLoading && <Loader />}
-          {!isLoading && !error && (
+          {!isLoading && !error && display === true && (
             <MovieList movies={movies} onSelectMovie={handleSelectMovie} />
           )}
           {error && <ErrorMessage message={error} />}
         </Box>
 
-        <Box>
+        <Box className="w-1/2">
           {selectedId ? (
             <MovieDetails
               selectedId={selectedId}
@@ -67,7 +67,6 @@ export default function App() {
             />
           ) : (
             <>
-              <WatchedSummary watched={watched} />
               <WatchedMovieList
                 watched={watched}
                 onDeleteWatched={handleDeleteWatched}
@@ -76,14 +75,13 @@ export default function App() {
           )}
         </Box>
       </Main>
-    </>
+    </div>
   );
 }
 
 function NavBar({ children }) {
   return (
-    <nav className="nav-bar">
-      <Logo />
+    <nav className="flex items-center justify-between nav-bar align-center">
       {children}
     </nav>
   );
@@ -98,15 +96,6 @@ function ErrorMessage({ message }) {
     <p className="error">
       <span>⛔</span> {message}
     </p>
-  );
-}
-
-function Logo() {
-  return (
-    <div className="logo">
-      <span role="img">🍿</span>
-      <h1>usePopcorn</h1>
-    </div>
   );
 }
 
@@ -128,7 +117,7 @@ function Search({ query, setQuery }) {
 
   return (
     <input
-      className="search"
+      className="flex content-center h-8 search align-center"
       type="text"
       placeholder="Search movies..."
       value={query}
@@ -147,20 +136,11 @@ function NumResults({ movies }) {
 }
 
 function Main({ children }) {
-  return <main className="main">{children}</main>;
+  return <main className="flex h-full main">{children}</main>;
 }
 
-function Box({ children }) {
-  const [isOpen, setIsOpen] = useState(true);
-
-  return (
-    <div className="box">
-      <button className="btn-toggle" onClick={() => setIsOpen((open) => !open)}>
-        {isOpen ? "–" : "+"}
-      </button>
-      {isOpen && children}
-    </div>
-  );
+function Box({ children, setDisplay, display }) {
+  return <div className={display === true ? "box" : "box"}>{children}</div>;
 }
 
 /*
@@ -199,20 +179,27 @@ function MovieList({ movies, onSelectMovie }) {
 
 function Movie({ movie, onSelectMovie }) {
   return (
-    <li onClick={() => onSelectMovie(movie.imdbID)}>
-      <img src={movie.Poster} alt={`${movie.Title} poster`} />
+    <li className="flex" onClick={() => onSelectMovie(movie.imdbID)}>
+      <img
+        className="h-12 w-7"
+        src={movie.Poster}
+        alt={`${movie.Title} poster`}
+      />
       <h3>{movie.Title}</h3>
       <div>
-        <p>
-          <span>🗓</span>
-          <span>{movie.Year}</span>
-        </p>
+        <p>({movie.Year})</p>
       </div>
     </li>
   );
 }
 
-function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
+function MovieDetails({
+  selectedId,
+  onCloseMovie,
+  onAddWatched,
+  watched,
+  setDisplay,
+}) {
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [userRating, setUserRating] = useState("");
@@ -239,8 +226,6 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
     imdbRating,
     Plot: plot,
     Released: released,
-    Actors: actors,
-    Director: director,
     Genre: genre,
   } = movie;
 
@@ -280,7 +265,6 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
         const data = await res.json();
         setMovie(data);
         setIsLoading(false);
-        console.log(data);
       }
       getMovieDetails();
     },
@@ -305,11 +289,12 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
         <Loader />
       ) : (
         <>
-          <header>
-            <button className="btn-back" onClick={onCloseMovie}>
-              👈
-            </button>
-            <img src={poster} alt={`Poster of ${movie} movie`} />
+          <div className="flex">
+            <img
+              className="w-1/2"
+              src={poster}
+              alt={`Poster of ${movie} movie`}
+            />
             <div className="details-overview">
               <h2>{title}</h2>
               <p>
@@ -319,68 +304,39 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
               <p>
                 <span>⭐</span> {imdbRating} IMDB rating
               </p>
+              <button onClick={() => setDisplay(true)}>RESET</button>
+              <div>
+                <div className="rating">
+                  {!isWatched ? (
+                    <>
+                      <StarRating
+                        maxRating={5}
+                        size={24}
+                        onSetRating={setUserRating}
+                      />
+                      {userRating > 0 && (
+                        <button className="btn-add" onClick={handleAdd}>
+                          + Add to list
+                        </button>
+                      )}
+                    </>
+                  ) : (
+                    <p>You rated this movie {watchedUserRating}/5⭐</p>
+                  )}
+                </div>
+              </div>
             </div>
-          </header>
+          </div>
 
           {/* <p>{averageRating}</p> */}
 
           <section>
-            <div className="rating">
-              {!isWatched ? (
-                <>
-                  <StarRating
-                    maxRating={10}
-                    size={24}
-                    onSetRating={setUserRating}
-                  />
-                  {userRating > 0 && (
-                    <button className="btn-add" onClick={handleAdd}>
-                      + Add to list
-                    </button>
-                  )}
-                </>
-              ) : (
-                <p>You rated this movie {watchedUserRating}/10⭐</p>
-              )}
-            </div>
             <p>
               <em>{plot}</em>
             </p>
-            <p>Starring {actors}</p>
-            <p>Directed by {director}</p>
           </section>
         </>
       )}
-    </div>
-  );
-}
-
-function WatchedSummary({ watched }) {
-  const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
-  const avgUserRating = average(watched.map((movie) => movie.userRating));
-  const avgRuntime = average(watched.map((movie) => movie.runtime));
-
-  return (
-    <div className="summary">
-      <h2>Movies you watched</h2>
-      <div>
-        <p>
-          <span>#️⃣</span>
-          <span>{watched.length} movies</span>
-        </p>
-        <p>
-          <span>⭐️</span>
-          <span>{avgImdbRating.toFixed(2)}</span>
-        </p>
-        <p>
-          <span>🌟</span>
-          <span>{avgUserRating.toFixed(2)}</span>
-        </p>
-        <p>
-          <span>⏳</span>
-          <span>{avgRuntime} min</span>
-        </p>
-      </div>
     </div>
   );
 }
