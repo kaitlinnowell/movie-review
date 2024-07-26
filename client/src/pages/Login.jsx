@@ -10,7 +10,7 @@ function Login() {
       {box === "login" ? (
         <LoginBox setBox={setBox} />
       ) : (
-        box === "signup"(<SignupBox setBox={setBox} />)
+        <SignupBox setBox={setBox} />
       )}
     </div>
   );
