@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AppLayout from "./pages/AppLayout";
 import Login from "./pages/Login";
+import Lists from "./pages/Lists";
 import Error from "./components/Error";
 
 function App() {
@@ -17,6 +18,10 @@ function App() {
         {
           path: "/",
           element: <AppLayout />,
+        },
+        {
+          path: "/lists",
+          element: <Lists />,
         },
       ],
     },
