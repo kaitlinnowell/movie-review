@@ -1,8 +1,6 @@
 function Header() {
   return (
-    <div>
-      <p>Header</p>
-    </div>
+    <header className="h-36 bg-blue-800 flex justify-between align-bottom"></header>
   );
 }
 
