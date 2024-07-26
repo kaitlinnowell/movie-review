@@ -34,35 +34,79 @@ const Lists = () => {
   return (
     <>
       <div>
-        <div>
-          <h1>Viewing saved movies!</h1>
-        </div>
-      </div>
-      <div>
-        <h2>
-          {userData.savedMovies.length
-            ? `Viewing ${userData.savedMovies.length} saved ${
-                userData.savedMovies.length === 1 ? "movie" : "movies"
-              }:`
-            : "You have no saved movies!"}
-        </h2>
-        <div>
-          {userData.savedMovies.map((movie) => (
-            <div key={movie.movieId}>
-              {movie.image && (
-                <img src={movie.image} alt={`The cover for ${movie.title}`} />
-              )}
-              <div>
-                <h3>{movie.title}</h3>
-                <p>Directed by: {movie.directors}</p>
-                <p>{movie.review}</p>
-                <button onClick={() => handleDeleteMovie(movie.movieId)}>
-                  X
-                </button>
+          {userData.savedMovies?.length
+            ? <div>
+            {userData.savedMovies?.map((movie) => (
+              <div key={movie.movieId} className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                {movie.image && (
+                  <img
+                    src={movie.image}
+                    alt={`The cover for ${movie.title}`}
+                    className="movie-img-top"
+                  />
+                )}
+                <div className="movie-body">
+                  <h3>{movie.title}</h3>
+                  <p className="small">Directed by: {movie.directors}</p>
+                  <p>{movie.rating}</p>
+                  <p>{movie.review}</p>
+                  <button
+                    className="btn btn-danger btn-block"
+                    onClick={() => handleDeleteMovie(movie.movieId)}
+                  >
+                    X
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+            : <div>
+            {userData.savedMovies?.length
+              ? userData.savedMovies.map((movie) => (
+                  <div key={movie.movieId} className="movie-card mb-3">
+                    {movie.image && (
+                      <img
+                        src={movie.image}
+                        alt={`The cover for ${movie.title}`}
+                        className="movie-img-top"
+                        style={{ width: '50%', height: 'auto' }}
+                      />
+                    )}
+                    <div className="movie-body">
+                      <h3>{movie.title}</h3>
+                      <p className="small">Directed by: {movie.directors}</p>
+                      <p>{movie.review}</p>
+                      <button
+                        className="btn btn-danger btn-block"
+                        onClick={() => handleDeleteMovie(movie.movieId)}
+                      >
+                        X
+                      </button>
+                    </div>
+                  </div>
+                ))
+              : <div>
+              <div className="flex space-x-4 max-w-sm p-2 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+              <img
+                src="../src/assets/poster.jpg"
+                alt="The cover for movie"
+                className="movie-img-top rounded-lg"
+                style={{ width: '25%', height: 'auto' }}
+              />
+              <div className="movie-body p-2 flex-1">
+                <div>
+                    <h2 className="text-xl font-semibold">Movie Title (2008)</h2>
+                    <p className="text-gray-600 dark:text-gray-400">☆☆☆☆☆
+                    </p>
+                    <p className="mt-2 text-sm">This movie is soooo good. Greatest of all time</p>
+
+                </div>
               </div>
             </div>
-          ))}
-        </div>
+            </div>
+            }
+          </div>
+        }
       </div>
     </>
   );
