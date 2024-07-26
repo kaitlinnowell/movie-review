@@ -1,9 +1,11 @@
 import LoginBox from "../components/LoginBox";
+import SignupBox from "../components/SignupBox";
 
 function Login() {
+  const x=true
   return (
     <div>
-      <LoginBox />
+      {x===true ? <LoginBox />: <SignupBox/>}
     </div>
   );
 }
