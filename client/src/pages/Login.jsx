@@ -1,5 +1,11 @@
+import LoginBox from "../components/LoginBox";
+
 function Login() {
-  return <div>login page</div>;
+  return (
+    <div>
+      <LoginBox />
+    </div>
+  );
 }
 
 export default Login;
