@@ -4,6 +4,7 @@ import StarRating from "../components/StarRating";
 import { useMovies } from "../hooks/useMovies";
 import { useLocalStorageState } from "../hooks/useLocalStorageState";
 import { useKey } from "../hooks/useKey";
+import AuthService from "../utils/auth";
 
 const KEY = "e91d2696";
 
@@ -14,6 +15,12 @@ export default function App() {
   const [display, setDisplay] = useState(true);
 
   const [watched, setWatched] = useLocalStorageState([], "watched");
+
+  useEffect(() => {
+    if (!AuthService.loggedIn()) {
+      window.location.assign('/login'); // Redirect to login page if not logged in
+    }
+  }, []);
 
   function handleSelectMovie(id) {
     setSelectedId((selectedId) => (id === selectedId ? null : id));

@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Lists from "./pages/Lists";
 import Error from "./components/Error";
 import Dashboard2 from "./pages/Dashboard2";
+import '../index.css';
 // import Dashboard from "./pages/Dashboard";
 
 function App() {
