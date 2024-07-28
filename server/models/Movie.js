@@ -13,15 +13,6 @@ const movieSchema = new Schema({
     type: String,
     required: true,
   },
-  directors: [
-    {
-      type: String,
-    },
-  ],
-  review: {
-    type: String,
-    required: true,
-  },
   rating: {
     type: Number,
     required: true,

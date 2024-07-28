@@ -12,8 +12,6 @@ const typeDefs = `
         movieId: String!
         title: String!
         image: String!
-        directors: [String]
-        review: String!
         rating: Float!
         favorite: Boolean
     }
@@ -30,7 +28,7 @@ const typeDefs = `
     type Mutation {
         addUser(username: String!, email: String!, password: String!): Auth
         login(email: String!, password: String!): Auth
-        addMovie(movieId: String!, title: String!, image: String!, directors: [String], review: String!, rating: Float!, favorite: Boolean): User
+        addMovie(movieId: String!, title: String!, image: String!, rating: Float!, favorite: Boolean): User
         removeMovie(movieId: String!): User
     }
 `;
