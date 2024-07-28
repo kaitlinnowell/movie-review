@@ -35,7 +35,7 @@ const resolvers = {
     },
     addMovie: async (
       parent,
-      { movieId, title, image, directors, review, rating, favorite },
+      { movieId, title, image, rating, favorite },
       context
     ) => {
       if (!context.user) {
@@ -46,8 +46,6 @@ const resolvers = {
         movieId,
         title,
         image,
-        directors,
-        review,
         rating,
         favorite,
       };

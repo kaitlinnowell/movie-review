@@ -12,8 +12,6 @@ export const QUERY_ME = gql`
         movieId
         title
         image
-        directors
-        review
         rating
         favorite
       }
