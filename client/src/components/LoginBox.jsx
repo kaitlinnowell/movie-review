@@ -1,6 +1,6 @@
 import { Alert } from "react-bootstrap";
 import { useMutation } from "@apollo/client";
-import { LOGIN_USER } from "../utils/mutations2";
+import { LOGIN_USER } from "../utils/mutations";
 import { useState } from "react";
 import Auth from "../utils/auth";
 /* eslint-disable no-unused-vars */

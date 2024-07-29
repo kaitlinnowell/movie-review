@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from "@apollo/client";
-import { QUERY_ME } from "../utils/queries2";
-import { UN_RATE_MOVIE } from "../utils/mutations2";
+import { QUERY_ME } from "../utils/queries";
+import { UN_RATE_MOVIE } from "../utils/mutations";
 import Auth from "../utils/auth";
 
 const Lists = () => {
