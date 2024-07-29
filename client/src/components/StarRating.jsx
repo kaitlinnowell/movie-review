@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+// import { handleError } from "@apollo/client/link/http/parseAndCheckHttpResponse";
 const containerStyle = {
   display: "flex",
   alignItems: "center",
@@ -34,12 +35,17 @@ export default function StarRating({
   }
   const textStyle = {
     lineHeight: "1",
-    margin: "0px",
+    margin: "3px",
     color,
     fontSize: `${size / 1.5}px`,
   };
+
+  function handleStarReset() {
+    setHoverRating("");
+    setRating("");
+  }
   return (
-    <div style={containerStyle} className={className}>
+    <div style={containerStyle} className={`mt-5 flex flex-col ${className}`}>
       <div style={starContainerStyle}>
         {Array.from({ length: maxRating }, (_, i) => (
           <Star
@@ -52,12 +58,14 @@ export default function StarRating({
             size={size}
           />
         ))}
+
+        <p style={textStyle}>
+          {messages.length === maxRating
+            ? messages[hoverRating ? hoverRating - 1 : rating - 1]
+            : hoverRating || rating || ""}
+        </p>
       </div>
-      <p style={textStyle}>
-        {messages.length === maxRating
-          ? messages[hoverRating ? hoverRating - 1 : rating - 1]
-          : hoverRating || rating || ""}
-      </p>
+      <button onClick={handleStarReset}>Clear Rating</button>
     </div>
   );
 }

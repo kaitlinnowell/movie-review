@@ -12,7 +12,7 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(null);
   const { movies, isLoading, error } = useMovies(query);
-  const [display, setDisplay] = useState(true);
+  const [selected, setSelected] = useState(false);
 
   const [rated, setRated] = useLocalStorageState([], "rated");
 
@@ -24,7 +24,7 @@ export default function App() {
 
   function handleSelectMovie(id) {
     setSelectedId((selectedId) => (id === selectedId ? null : id));
-    setDisplay(false);
+    setSelected(!selected);
   }
 
   function handleCloseMovie() {
@@ -51,33 +51,38 @@ export default function App() {
   return (
     <div className="h-full">
       <NavBar>
-        <Search query={query} setQuery={setQuery} />
+        <Search query={query} setQuery={setQuery} setSelected={setSelected} />
         <NumResults movies={movies} />
       </NavBar>
       <Main className="flex">
-        <Box className="flex" setDisplay={setDisplay}>
-          {/* {isLoading ? <Loader /> : <MovieList movies={movies} />} */}
-          {isLoading && <Loader />}
-          {!isLoading && !error && display === true && (
-            <MovieList movies={movies} onSelectMovie={handleSelectMovie} />
-          )}
-          {error && <ErrorMessage message={error} />}
-        </Box>
-
-        <Box className="w-1/2">
-          {selectedId ? (
-            <MovieDetails
-              selectedId={selectedId}
-              onCloseMovie={handleCloseMovie}
-              onAddRated={handleAddRated}
-              rated={rated}
-            />
-          ) : (
-            <>
-              <RatedMovieList rated={rated} onDeleteRated={handleDeleteRated} />
-            </>
-          )}
-        </Box>
+        {!selected ? (
+          <Box className="flex">
+            {/* {isLoading ? <Loader /> : <MovieList movies={movies} />} */}
+            {isLoading && <Loader />}
+            {!isLoading && !error && (
+              <MovieList movies={movies} onSelectMovie={handleSelectMovie} />
+            )}
+            {error && <ErrorMessage message={error} />}
+          </Box>
+        ) : (
+          <Box className="w-1/2">
+            {selectedId ? (
+              <MovieDetails
+                selectedId={selectedId}
+                onCloseMovie={handleCloseMovie}
+                onAddRated={handleAddRated}
+                rated={rated}
+              />
+            ) : (
+              <>
+                <RatedMovieList
+                  rated={rated}
+                  onDeleteRated={handleDeleteRated}
+                />
+              </>
+            )}
+          </Box>
+        )}
       </Main>
     </div>
   );
@@ -103,7 +108,7 @@ function ErrorMessage({ message }) {
   );
 }
 
-function Search({ query, setQuery }) {
+function Search({ query, setQuery, selected, setSelected }) {
   const inputElement = useRef(null);
 
   useKey("Enter", function () {
@@ -112,6 +117,11 @@ function Search({ query, setQuery }) {
     inputElement.current.focus();
     setQuery("");
   });
+
+  function handleSearchReset() {
+    setQuery("");
+    setSelected(false);
+  }
 
   // useEffect(function () {
   //   const el = document.querySelector(".search");
@@ -127,6 +137,7 @@ function Search({ query, setQuery }) {
       value={query}
       onChange={(e) => setQuery(e.target.value)}
       ref={inputElement}
+      onClick={handleSearchReset}
     />
   );
 }
@@ -308,7 +319,7 @@ function MovieDetails({
               <p>
                 <span>⭐</span> {imdbRating} IMDB rating
               </p>
-              <button onClick={() => setDisplay(true)}>RESET</button>
+
               <div>
                 <div className="rating">
                   {!isRated ? (
@@ -318,11 +329,6 @@ function MovieDetails({
                         size={24}
                         onSetRating={setUserRating}
                       />
-                      {userRating > 0 && (
-                        <button className="btn-add" onClick={handleAdd}>
-                          + Add to list
-                        </button>
-                      )}
                     </>
                   ) : (
                     <p>You rated this movie {ratedUserRating}/5⭐</p>
