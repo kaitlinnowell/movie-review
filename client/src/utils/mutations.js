@@ -27,14 +27,18 @@ export const ADD_MOVIE = gql`
     $movieId: String!
     $title: String!
     $image: String!
+    $review: String!
     $rating: Float!
+    $directors: [String]
     $favorite: Boolean
   ) {
     addMovie(
       movieId: $movieId
       title: $title
       image: $image
+      review: $review
       rating: $rating
+      directors: $directors
       favorite: $favorite
     ) {
       _id
@@ -42,10 +46,12 @@ export const ADD_MOVIE = gql`
       password
       savedMovieCount
       savedMovies {
+        directors
         favorite
         image
         movieId
         rating
+        review
         title
       }
     }
@@ -60,10 +66,12 @@ export const REMOVE_MOVIE = gql`
       password
       savedMovieCount
       savedMovies {
+        directors
         favorite
         image
         movieId
         rating
+        review
         title
       }
       username
