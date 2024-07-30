@@ -26,7 +26,6 @@ export default function App() {
   }, []);
 
   function handleSelectMovie(movie) {
-    console.log(movie);
     setSelectedId((selectedId) =>
       movie.imdbID === selectedId ? null : movie.imdbID
     );
@@ -37,15 +36,15 @@ export default function App() {
     setSelectedId(null);
   }
 
-  async function handleAddRated(movie) {
+  async function handleAddRated(movie, userRating) {
     console.log("in handle add rated");
     console.log(movie);
-    setRated((rated) => [...rated, movie]);
+    // setRated((rated) => [...rated, movie]);
     const movieToRate = {
       movieId: movie.imdbID,
       title: movie.Title,
       image: movie.Poster,
-      rating: movie.userRating,
+      rating: userRating,
     };
 
     console.log(movieToRate);
@@ -55,6 +54,7 @@ export default function App() {
       return false;
     }
     try {
+      console.log("running mutation thing");
       const { data } = await rateMovie({
         variables: { movieInput: movieToRate },
       });
@@ -99,6 +99,7 @@ export default function App() {
                 onCloseMovie={handleCloseMovie}
                 onAddRated={handleAddRated}
                 rated={rated}
+                movies={movies}
               />
             ) : (
               <>
@@ -276,24 +277,24 @@ function MovieDetails({
 
   // const [averageRating, setAverageRating] = useState(0);
 
-  function handleAdd() {
-    const newRatedMovie = {
-      imdbID: selectedId,
-      title,
-      poster,
-      year,
-      imdbRating: Number(imdbRating),
-      runtime: Number(runtime.split(" ")[0]),
-      userRating,
-      countRatingDecisions: countRef.current,
-    };
+  // function handleAdd() {
+  //   const newRatedMovie = {
+  //     imdbID: selectedId,
+  //     title,
+  //     poster,
+  //     year,
+  //     imdbRating: Number(imdbRating),
+  //     runtime: Number(runtime.split(" ")[0]),
+  //     userRating,
+  //     countRatingDecisions: countRef.current,
+  //   };
 
-    onAddRated(newRatedMovie);
-    // onCloseMovie();
+  //   // onAddRated(newRatedMovie);
+  //   // onCloseMovie();
 
-    // setAverageRating(Number(imdbRating));
-    // setAverageRating((x) => (x + userRating) / 2);
-  }
+  //   // setAverageRating(Number(imdbRating));
+  //   // setAverageRating((x) => (x + userRating) / 2);
+  // }
 
   useKey("Escape", onCloseMovie);
 
@@ -355,8 +356,12 @@ function MovieDetails({
                         maxRating={5}
                         size={24}
                         onSetRating={setUserRating}
-                        onClick={onAddRated}
+                        onAddRated={onAddRated}
+                        movie={movie}
                       />
+                      <button onClick={() => onAddRated(movie, userRating)}>
+                        Submit
+                      </button>
                     </>
                   ) : (
                     <p>You rated this movie {ratedUserRating}/5⭐</p>
