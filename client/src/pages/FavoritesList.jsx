@@ -59,7 +59,7 @@ const FavoritesList = () => {
     <div>
       <h1 className="flex justify-center text-4xl">FAVORITES</h1>
       <div className="flex justify-center min-h-screen p-4">
-        {userData.movies?.length > 0 ? (
+        {userData.favoriteMovies?.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl">
             {userData.favoriteMovies.map((movie) => (
               <div key={movie.movieId}>
@@ -74,7 +74,7 @@ const FavoritesList = () => {
                     type="button"
                     className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
                   >
-                    Favorite
+                    Unfavorite
                   </button>
                   <button
                     onClick={() => handleUnrateMovie(movie.movieId)}
