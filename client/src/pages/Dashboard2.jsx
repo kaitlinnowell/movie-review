@@ -4,7 +4,9 @@ import StarRating from "../components/StarRating";
 import { useMovies } from "../hooks/useMovies";
 import { useLocalStorageState } from "../hooks/useLocalStorageState";
 import { useKey } from "../hooks/useKey";
-import AuthService from "../utils/auth";
+import { useMutation } from "@apollo/client";
+import { RATE_MOVIE } from "../utils/mutations";
+import Auth from "../utils/auth";
 
 const KEY = "e91d2696";
 
@@ -13,11 +15,12 @@ export default function App() {
   const [selectedId, setSelectedId] = useState(null);
   const { movies, isLoading, error } = useMovies(query);
   const [selected, setSelected] = useState(false);
+  const [rateMovie, { error2, data }] = useMutation(RATE_MOVIE);
 
   const [rated, setRated] = useLocalStorageState([], "rated");
 
   useEffect(() => {
-    if (!AuthService.loggedIn()) {
+    if (!Auth.loggedIn()) {
       window.location.assign("/login"); // Redirect to login page if not logged in
     }
   }, []);
@@ -34,10 +37,31 @@ export default function App() {
     setSelectedId(null);
   }
 
-  function handleAddRated(movie) {
+  async function handleAddRated(movie) {
+    console.log("in handle add rated");
+    console.log(movie);
     setRated((rated) => [...rated, movie]);
+    const movieToRate = {
+      movieId: movie.imdbID,
+      title: movie.Title,
+      image: movie.Poster,
+      rating: movie.userRating,
+    };
 
-    // localStorage.setItem("rated", JSON.stringify([...rated, movie]));
+    console.log(movieToRate);
+    const token = Auth.loggedIn() ? Auth.getToken() : null;
+
+    if (!token) {
+      return false;
+    }
+    try {
+      const { data } = await rateMovie({
+        variables: { movieInput: movieToRate },
+      });
+      console.log({ data });
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   function handleDeleteRated(id) {
@@ -295,7 +319,7 @@ function MovieDetails({
       document.title = `Movie | ${title}`;
 
       return function () {
-        document.title = "usePopcorn";
+        document.title = "Reel Reviews";
       };
     },
     [title]
@@ -331,6 +355,7 @@ function MovieDetails({
                         maxRating={5}
                         size={24}
                         onSetRating={setUserRating}
+                        onClick={onAddRated}
                       />
                     </>
                   ) : (

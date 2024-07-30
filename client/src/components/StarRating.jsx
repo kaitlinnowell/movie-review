@@ -17,6 +17,7 @@ StarRating.propTypes = {
   messages: PropTypes.array,
   className: PropTypes.string,
   onSetRating: PropTypes.func,
+  // handleAddRated: PropTypes.func,
 };
 export default function StarRating({
   maxRating = 5,
@@ -26,6 +27,7 @@ export default function StarRating({
   messages = [],
   defaultRating = 0,
   onSetRating,
+  // handleAddRated,
 }) {
   const [rating, setRating] = useState(defaultRating);
   const [hoverRating, setHoverRating] = useState(0);
@@ -44,6 +46,7 @@ export default function StarRating({
     setHoverRating("");
     setRating("");
   }
+
   return (
     <div style={containerStyle} className={`mt-5 flex flex-col ${className}`}>
       <div style={starContainerStyle}>
@@ -56,6 +59,7 @@ export default function StarRating({
             onHoverOut={() => setHoverRating(0)}
             color={color}
             size={size}
+            // onClick={handleAddRated}
           />
         ))}
 
