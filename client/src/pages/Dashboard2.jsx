@@ -22,8 +22,11 @@ export default function App() {
     }
   }, []);
 
-  function handleSelectMovie(id) {
-    setSelectedId((selectedId) => (id === selectedId ? null : id));
+  function handleSelectMovie(movie) {
+    console.log(movie);
+    setSelectedId((selectedId) =>
+      movie.imdbID === selectedId ? null : movie.imdbID
+    );
     setSelected(!selected);
   }
 
@@ -194,7 +197,7 @@ function MovieList({ movies, onSelectMovie }) {
 
 function Movie({ movie, onSelectMovie }) {
   return (
-    <li className="flex" onClick={() => onSelectMovie(movie.imdbID)}>
+    <li className="flex" onClick={() => onSelectMovie(movie)}>
       <img
         className="h-12 w-7"
         src={movie.Poster}
