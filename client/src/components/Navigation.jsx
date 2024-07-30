@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import Auth from '../utils/auth';
 
 export default function Navigation() {
   const { pathname } = useLocation();
@@ -17,6 +18,7 @@ export default function Navigation() {
       >
         Favorites
       </Link>
+      <Link onClick={Auth.logout}>Logout</Link>
     </nav>
   );
 }
