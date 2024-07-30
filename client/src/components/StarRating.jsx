@@ -17,6 +17,7 @@ StarRating.propTypes = {
   messages: PropTypes.array,
   className: PropTypes.string,
   onSetRating: PropTypes.func,
+  // handleAddRated: PropTypes.func,
 };
 export default function StarRating({
   maxRating = 5,
@@ -26,6 +27,9 @@ export default function StarRating({
   messages = [],
   defaultRating = 0,
   onSetRating,
+  onAddRated,
+  movie,
+  // handleAddRated,
 }) {
   const [rating, setRating] = useState(defaultRating);
   const [hoverRating, setHoverRating] = useState(0);
@@ -44,6 +48,7 @@ export default function StarRating({
     setHoverRating("");
     setRating("");
   }
+
   return (
     <div style={containerStyle} className={`mt-5 flex flex-col ${className}`}>
       <div style={starContainerStyle}>
@@ -56,6 +61,9 @@ export default function StarRating({
             onHoverOut={() => setHoverRating(0)}
             color={color}
             size={size}
+            onAddRated={() => onAddRated()}
+            movie={movie}
+            // onClick={handleAddRated}
           />
         ))}
 
@@ -69,18 +77,30 @@ export default function StarRating({
     </div>
   );
 }
-function Star({ onRate, full, onHoverIn, onHoverOut, color, size }) {
+function Star({
+  onRate,
+  full,
+  onHoverIn,
+  onHoverOut,
+  color,
+  size,
+  // onAddRated,
+  // movie,
+}) {
   const starStyle = {
     width: `${size}px`,
     height: `${size}px`,
     display: "block",
     cursor: "pointer",
   };
+
+  // const stupid = JSON.stringify(movie);
+  // console.log(stupid);
   return (
     <span
       role="button"
       style={starStyle}
-      onClick={onRate}
+      onClick={() => onRate()}
       onMouseEnter={onHoverIn}
       onMouseLeave={onHoverOut}
     >
