@@ -20,7 +20,6 @@ const Heart = ({ movie, userData, userRating }) => {
   }, [movie]);
 
   const handleToggleFavorite = async () => {
-
     const token = Auth.loggedIn() ? Auth.getToken() : null;
     if (!token) {
       console.error("No token found");
@@ -40,9 +39,7 @@ const Heart = ({ movie, userData, userRating }) => {
               movieId: movie.imdbID,
               title: movie.Title,
               image: movie.Poster,
-
               rating: userRating,
-
             },
           },
         });
