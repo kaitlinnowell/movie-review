@@ -273,9 +273,8 @@ function MovieDetails({
   useEffect(() => {
     async function getMovieDetails() {
       setIsLoading(true);
-      const API_URL = process.env.REACT_APP_API_URL || `https://www.omdbapi.com/`;
       const res = await fetch(
-        `${API_URL}/?i=${selectedId}&apikey=${KEY}`
+        `https://www.omdbapi.com/?i=${selectedId}&apikey=${KEY}`
       );
       const data = await res.json();
       setMovie(data);
