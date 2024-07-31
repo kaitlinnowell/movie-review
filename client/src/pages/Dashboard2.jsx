@@ -4,8 +4,11 @@ import StarRating from "../components/StarRating";
 import { useMovies } from "../hooks/useMovies";
 import { useLocalStorageState } from "../hooks/useLocalStorageState";
 import { useKey } from "../hooks/useKey";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { RATE_MOVIE } from "../utils/mutations";
+import Heart from "../components/Heart";
+import { QUERY_ME } from "../utils/queries";
+
 import Auth from "../utils/auth";
 
 const KEY = "e91d2696";
@@ -16,7 +19,8 @@ export default function App() {
   const { movies, isLoading, error } = useMovies(query);
   const [selected, setSelected] = useState(false);
   const [rateMovie, { error2, data }] = useMutation(RATE_MOVIE);
-
+  const me = useQuery(QUERY_ME);
+  const userData = me.data?.me || {};
   const [rated, setRated] = useLocalStorageState([], "rated");
 
   useEffect(() => {
@@ -100,6 +104,7 @@ export default function App() {
                 onAddRated={handleAddRated}
                 rated={rated}
                 movies={movies}
+                userData={userData}
               />
             ) : (
               <>
@@ -242,6 +247,7 @@ function MovieDetails({
   onAddRated,
   rated,
   setDisplay,
+  userData,
 }) {
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -362,6 +368,11 @@ function MovieDetails({
                       <button onClick={() => onAddRated(movie, userRating)}>
                         Submit
                       </button>
+                      <Heart
+                        movie={movie}
+                        userData={userData}
+                        userRating={userRating}
+                      />
                     </>
                   ) : (
                     <p>You rated this movie {ratedUserRating}/5⭐</p>
