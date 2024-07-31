@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { UN_RATE_MOVIE } from "../utils/mutations";
+import { useMutation } from "@apollo/client";
 // import { handleError } from "@apollo/client/link/http/parseAndCheckHttpResponse";
 const containerStyle = {
   display: "flex",
@@ -28,22 +30,46 @@ export default function StarRating({
   onSetRating,
   onAddRated,
   movie,
+  userData,
   // handleAddRated,
 }) {
+  console.log("star", userData);
+  console.log("movie", movie);
+
   const [rating, setRating] = useState(defaultRating);
   const [hoverRating, setHoverRating] = useState(0);
+  const [unrateMovie] = useMutation(UN_RATE_MOVIE);
+
+  useEffect(() => {
+    // Check if the movie is already rated
+
+    if (userData) {
+      const ratedMovie = userData?.ratedMovies?.filter(
+        (checkMovie) => checkMovie.movieId === movie.imdbID
+      );
+      setRating(ratedMovie[0]?.rating);
+    }
+  }, []);
+
   function handleRating(rating) {
     setRating(rating);
     onSetRating(rating);
   }
 
-  function handleStarReset() {
+  async function handleStarReset(movieId) {
+    const { data } = await unrateMovie({
+      variables: { movieId },
+    });
+    console.log(data);
     setHoverRating("");
     setRating("");
   }
 
   return (
-    <div style={containerStyle} className={`mt-1 mb-1 flex flex-col ${className}`}>
+    <div
+      style={containerStyle}
+      className={`mt-1 mb-1 flex flex-col ${className}`}
+    >
       <div style={starContainerStyle}>
         {Array.from({ length: maxRating }, (_, i) => (
           <Star
@@ -59,9 +85,10 @@ export default function StarRating({
             // onClick={handleAddRated}
           />
         ))}
-
       </div>
-      <button onClick={handleStarReset} className="mb-4">Clear Rating</button>
+      <button onClick={() => handleStarReset(movie.imdbID)} className="mb-4">
+        Clear Rating
+      </button>
     </div>
   );
 }

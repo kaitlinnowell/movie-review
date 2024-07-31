@@ -134,7 +134,7 @@ function SignupBox({ setBox }) {
                     userFormData.password
                   )
                 }
-                className="w-full h-10 text-white bg-blue-600 rounded-lg"
+                className="w-full h-10 text-white bg-red-600 rounded-lg"
               >
                 Create an account
               </button>
@@ -142,7 +142,7 @@ function SignupBox({ setBox }) {
                 Already have an account?{" "}
                 <button
                   onClick={() => setBox("login")}
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                  className="font-medium text-primary-800 hover:underline dark:text-primary-500"
                 >
                   Login here
                 </button>
