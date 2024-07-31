@@ -106,17 +106,13 @@ export default function App() {
                 userData={userData}
               />
             ) : (
-              <RatedMovieList
-                rated={rated}
-                onDeleteRated={handleDeleteRated}
-              />
+              <RatedMovieList rated={rated} onDeleteRated={handleDeleteRated} />
             )}
           </Box>
         )}
       </Main>
     </div>
   );
-  
 }
 
 function NavBar({ children }) {
@@ -182,8 +178,10 @@ function NumResults({ movies }) {
 }
 
 function Main({ children, selected }) {
-  const mainClass = selected ? "flex h-full main w-screen justify-center" : "flex h-full main w-screen justify-around";
-  
+  const mainClass = selected
+    ? "flex h-full main w-screen justify-center"
+    : "flex h-full main w-screen justify-around";
+
   return <main className={mainClass}>{children}</main>;
 }
 
@@ -215,8 +213,6 @@ function RatedBox() {
 }
 */
 
-
-
 function MovieList({ movies, onSelectMovie }) {
   return (
     <ul className="list list-movies">
@@ -230,18 +226,21 @@ function MovieList({ movies, onSelectMovie }) {
 function Movie({ movie, onSelectMovie }) {
   return (
     <ul className="w-full">
-  <li className="flex items-center w-full cursor-pointer p-1 border-b hover:bg-gray-200" onClick={() => onSelectMovie(movie)}>
-    <img
-      className="h-12 w-7 mr-2"
-      src={movie.Poster}
-      alt={`${movie.Title} poster`}
-    />
-    <div className="flex flex-col">
-      <h3 className="text-lg font-semibold">{movie.Title}</h3>
-      <p className="text-sm text-gray-500">({movie.Year})</p>
-    </div>
-  </li>
-</ul>
+      <li
+        className="flex items-center w-full cursor-pointer p-1 border-b hover:bg-gray-200"
+        onClick={() => onSelectMovie(movie)}
+      >
+        <img
+          className="h-12 w-7 mr-2"
+          src={movie.Poster}
+          alt={`${movie.Title} poster`}
+        />
+        <div className="flex flex-col">
+          <h3 className="text-lg font-semibold">{movie.Title}</h3>
+          <p className="text-sm text-gray-500">({movie.Year})</p>
+        </div>
+      </li>
+    </ul>
   );
 }
 
@@ -267,10 +266,7 @@ function MovieDetails({
     (movie) => movie.imdbID === selectedId
   )?.userRating;
 
-  const {
-    Title: title,
-    Poster: poster,
-  } = movie;
+  const { Title: title, Poster: poster } = movie;
 
   useKey("Escape", onCloseMovie);
 
@@ -322,9 +318,9 @@ function MovieDetails({
                   <button
                     onClick={() => onAddRated(movie, userRating)}
                     type="button"
-                    className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5"
+                    className="focus:outline-none text-black bg-yellow-300 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5"
                   >
-                    Rate
+                    Submit Rating
                   </button>
                   <Heart
                     movie={movie}
@@ -342,7 +338,6 @@ function MovieDetails({
     </div>
   );
 }
-
 
 function RatedMovieList({ rated, onDeleteRated }) {
   return (
