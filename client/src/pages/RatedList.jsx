@@ -80,63 +80,65 @@ const RatedList = () => {
   return (
     <div>
       <h1 className="flex justify-center text-4xl">RATED</h1>
-      <div className="flex justify-center min-h-screen p-4">
-        {userData.ratedMovies?.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl">
-            {userData.ratedMovies.map((movie) => {
-              const isFavorite = userData.favoriteMovies.some(
-                (favMovie) => favMovie.movieId === movie.movieId
-              );
+      <div className="w-half rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+        <div className="flex justify-center min-h-screen p-4">
+          {userData.ratedMovies?.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl">
+              {userData.ratedMovies.map((movie) => {
+                const isFavorite = userData.favoriteMovies.some(
+                  (favMovie) => favMovie.movieId === movie.movieId
+                );
 
-              console.log(movie.rating);
+                console.log(movie.rating);
 
-              return (
-                <div key={movie.movieId}>
-                  <Movie
-                    src={movie.image}
-                    alt={movie.title}
-                    rating={movie.rating}
-                  />
-                  <div className="mt-1 mb-1 flex space-x-2 justify-center">
-                    {!isFavorite ? (
+                return (
+                  <div key={movie.movieId}>
+                    <Movie
+                      src={movie.image}
+                      alt={movie.title}
+                      rating={movie.rating}
+                    />
+                    <div className="mt-1 mb-1 flex space-x-2 justify-center">
+                      {!isFavorite ? (
+                        <button
+                          onClick={() =>
+                            handleFavoriteMovie(
+                              movie.movieId,
+                              movie.title,
+                              movie.image,
+                              movie.rating
+                            )
+                          }
+                          type="button"
+                          className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-red-900"
+                        >
+                          Favorite
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => handleUnfavoriteMovie(movie.movieId)}
+                          type="button"
+                          className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-red-900"
+                        >
+                          Unfavorite
+                        </button>
+                      )}
                       <button
-                        onClick={() =>
-                          handleFavoriteMovie(
-                            movie.movieId,
-                            movie.title,
-                            movie.image,
-                            movie.rating
-                          )
-                        }
+                        onClick={() => handleUnrateMovie(movie.movieId)}
                         type="button"
-                        className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-red-900"
+                        className="focus:outline-none text-white bg-yellow-300 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-900"
                       >
-                        Favorite
+                        Unrate
                       </button>
-                    ) : (
-                      <button
-                        onClick={() => handleUnfavoriteMovie(movie.movieId)}
-                        type="button"
-                        className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-red-900"
-                      >
-                        Unfavorite
-                      </button>
-                    )}
-                    <button
-                      onClick={() => handleUnrateMovie(movie.movieId)}
-                      type="button"
-                      className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-yellow-900"
-                    >
-                      Unrate
-                    </button>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="text-center">No rated movies found</div>
-        )}
+                );
+              })}
+            </div>
+          ) : (
+            <div className="text-center">No rated movies found</div>
+          )}
+        </div>
       </div>
     </div>
   );
