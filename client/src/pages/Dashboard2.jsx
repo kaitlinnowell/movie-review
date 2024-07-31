@@ -332,52 +332,43 @@ function MovieDetails({
         <Loader />
       ) : (
         <>
-          <div className="flex">
-            <img
-              className="w-1/2"
-              src={poster}
-              alt={`Poster of ${movie} movie`}
-            />
-            <div className="details-overview">
-              <h2>{title}</h2>
-              <p>
-                {released} &bull; {runtime}
-              </p>
-              <p>{genre}</p>
-              <p>
-                <span>⭐</span> {imdbRating} IMDB rating
-              </p>
-
-              <div>
-                <div className="rating">
+      <div className="relative flex flex-col justify-center">
+      <h1 className="flex justify-center text-2xl">{title}</h1>
+        <img
+          src={poster}
+          alt={`Poster of ${movie} movie`}
+          className="movie-img-top rounded-lg w-full h-auto shadow-xl"
+        />
+        <div>
                   {!isRated ? (
                     <>
                       <StarRating
                         maxRating={5}
-                        size={24}
+                        size={48}
                         onSetRating={setUserRating}
                         onAddRated={onAddRated}
                         movie={movie}
                       />
-                      <button onClick={() => onAddRated(movie, userRating)}>
-                        Submit
+                      <div className="mt-1 mb-1 flex space-x-2 justify-center">
+                      <button onClick={() => onAddRated(movie, userRating)} type="button"
+                  className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+                        Rate
                       </button>
+                      <button
+                    type="button"
+                    className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:focus:ring-yellow-900"
+                  >
+                    Favorite
+                  </button>
+                  </div>
                     </>
                   ) : (
                     <p>You rated this movie {ratedUserRating}/5⭐</p>
                   )}
-                </div>
-              </div>
-            </div>
+        </div>
           </div>
-
           {/* <p>{averageRating}</p> */}
 
-          <section>
-            <p>
-              <em>{plot}</em>
-            </p>
-          </section>
         </>
       )}
     </div>
