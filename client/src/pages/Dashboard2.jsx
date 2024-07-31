@@ -314,6 +314,7 @@ function MovieDetails({
                   onSetRating={setUserRating}
                   onAddRated={onAddRated}
                   movie={movie}
+                  userData={userData}
                 />
                 <div className="flex space-x-2">
                   <button
@@ -323,12 +324,12 @@ function MovieDetails({
                   >
                     Submit Rating
                   </button>
-                  <Heart
-                    movie={movie}
-                    userData={userData}
-                    userRating={userRating}
-                  />
                 </div>
+                <Heart
+                  movie={movie}
+                  userData={userData}
+                  userRating={userRating}
+                />
               </>
             ) : (
               <p>You rated this movie {ratedUserRating}/5⭐</p>
