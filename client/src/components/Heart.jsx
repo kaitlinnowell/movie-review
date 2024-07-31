@@ -10,6 +10,7 @@ const Heart = ({ movie, userData, userRating }) => {
 
   useEffect(() => {
     // Check if the movie is already in the user's favorite movies
+
     if (userData) {
       const favoriteMovie = userData.favoriteMovies.some(
         (favMovie) => favMovie.movieId === movie.imdbID
@@ -19,8 +20,7 @@ const Heart = ({ movie, userData, userRating }) => {
   }, [movie]);
 
   const handleToggleFavorite = async () => {
-    console.log("in this function");
-    console.log(movie);
+
     const token = Auth.loggedIn() ? Auth.getToken() : null;
     if (!token) {
       console.error("No token found");
@@ -40,7 +40,9 @@ const Heart = ({ movie, userData, userRating }) => {
               movieId: movie.imdbID,
               title: movie.Title,
               image: movie.Poster,
+
               rating: userRating,
+
             },
           },
         });
