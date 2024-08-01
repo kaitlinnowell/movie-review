@@ -17,7 +17,7 @@ const Heart = ({ movie, userData, userRating }) => {
       );
       setIsFavorite(favoriteMovie);
     }
-  }, [movie]);
+  }, [movie, userData]);
 
   const handleToggleFavorite = async () => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
@@ -39,7 +39,7 @@ const Heart = ({ movie, userData, userRating }) => {
               movieId: movie.imdbID,
               title: movie.Title,
               image: movie.Poster,
-              rating: userRating,
+              rating: userRating ? userRating : 0,
             },
           },
         });

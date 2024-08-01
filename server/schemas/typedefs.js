@@ -14,14 +14,14 @@ const typeDefs = `
         movieId: String!
         title: String!
         image: String!
-        rating: Float!
+        rating: Float
     }
 
     input MovieInput {
         movieId: String!
         title: String!
         image: String!
-        rating: Float!
+        rating: Float
     }
 
     type Auth {
